@@ -123,6 +123,16 @@ class ApiService {
     throw Exception(data.toString());
   }
 
+  static Future updateResident(Map data) async {
+    final res = await http.put(
+      Uri.parse('$baseUrl/resident'),
+      headers: await headers(),
+      body: jsonEncode(data),
+    );
+
+    return jsonDecode(res.body);
+  }
+
   // =========================
   // CONSULTATIONS
   // =========================
