@@ -4,6 +4,7 @@ import 'user_appointment.dart';
 import 'login_screen.dart';
 import 'appointments_screen.dart';
 import 'my_consultations_screen.dart';
+import 'user_profile_screen.dart'; // 👈 ADD THIS
 
 class UserDashboard extends StatelessWidget {
   final Map user;
@@ -18,7 +19,22 @@ class UserDashboard extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Resident Dashboard"),
+
         actions: [
+          // 🔧 SETTINGS BUTTON
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => UserProfileScreen(user: user),
+                ),
+              );
+            },
+          ),
+
+          // 🚪 LOGOUT BUTTON
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
@@ -32,7 +48,7 @@ class UserDashboard extends StatelessWidget {
                     (route) => false,
               );
             },
-          )
+          ),
         ],
       ),
 
@@ -59,7 +75,7 @@ class UserDashboard extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // BOOK APPOINTMENT
+            // 📅 BOOK APPOINTMENT
             _card(
               context,
               "Book Appointment",
@@ -69,6 +85,7 @@ class UserDashboard extends StatelessWidget {
 
             const SizedBox(height: 10),
 
+            // 📋 MY APPOINTMENTS
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -87,6 +104,7 @@ class UserDashboard extends StatelessWidget {
 
             const SizedBox(height: 10),
 
+            // 🏥 MY CONSULTATIONS
             InkWell(
               onTap: () {
                 Navigator.push(
@@ -108,6 +126,9 @@ class UserDashboard extends StatelessWidget {
     );
   }
 
+  // =========================
+  // CARD WIDGET (BOOK APPOINTMENT)
+  // =========================
   Widget _card(
       BuildContext context,
       String title,
@@ -128,20 +149,12 @@ class UserDashboard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.blue.shade50,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Colors.blue.shade100,
-          ),
+          border: Border.all(color: Colors.blue.shade100),
         ),
         child: Row(
           children: [
-            Icon(
-              icon,
-              size: 35,
-              color: Colors.blue,
-            ),
-
+            Icon(icon, size: 35, color: Colors.blue),
             const SizedBox(width: 15),
-
             Text(
               title,
               style: const TextStyle(
@@ -155,6 +168,9 @@ class UserDashboard extends StatelessWidget {
     );
   }
 
+  // =========================
+  // INFO CARD WIDGET
+  // =========================
   Widget _infoCard(
       String title,
       String subtitle,
@@ -169,24 +185,17 @@ class UserDashboard extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: Colors.grey),
-
           const SizedBox(width: 15),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-
               Text(
                 subtitle,
-                style: const TextStyle(
-                  color: Colors.grey,
-                ),
+                style: const TextStyle(color: Colors.grey),
               ),
             ],
           )
