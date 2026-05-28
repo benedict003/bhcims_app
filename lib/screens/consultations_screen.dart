@@ -211,7 +211,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.white, // ✅ WHITE INSIDE
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.blue.shade200),
                         ),
@@ -226,8 +226,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                               child: Text(m.medicineName),
                             );
                           }).toList(),
-                          onChanged: (v) =>
-                              setState(() => selectedMedicine = v),
+                          onChanged: (v) => setState(() => selectedMedicine = v),
                         ),
                       ),
 
