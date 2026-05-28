@@ -7,6 +7,7 @@ class ConsultationsScreen extends StatefulWidget {
   final Map user;
 
   const ConsultationsScreen({super.key, required this.user});
+
   @override
   State<ConsultationsScreen> createState() => _ConsultationsScreenState();
 }
@@ -17,7 +18,6 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
 
   int? selectedMedicine;
   DateTime? selectedDate;
-
   bool loading = true;
 
   final symptoms = TextEditingController();
@@ -39,13 +39,11 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
     } catch (e) {
       debugPrint("Error loading data: $e");
     }
-
     setState(() => loading = false);
   }
 
-  // ================= DATE PICKER =================
   Future<void> pickDate() async {
-    DateTime? picked = await showDatePicker(
+    final picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2020),
@@ -53,23 +51,20 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
     );
 
     if (picked != null) {
-      setState(() {
-        selectedDate = picked;
-      });
+      setState(() => selectedDate = picked);
     }
   }
 
-  // ================= CREATE =================
   Future<void> create() async {
     if (selectedDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please select a date")),
+        const SnackBar(content: Text("Please select a date")),
       );
       return;
     }
 
     final model = ConsultationModel(
-      residentId: 1,
+      residentId: widget.user['id'],
       symptoms: symptoms.text,
       diagnosis: diagnosis.text,
       treatment: treatment.text,
@@ -98,100 +93,195 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
     });
   }
 
+  InputDecoration _inputStyle(String label, IconData icon) {
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      filled: true,
+      fillColor: Colors.grey[100],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Consultations")),
+      appBar: AppBar(
+        title: const Text("Consultations"),
+        centerTitle: true,
+      ),
 
       body: loading
-          ? Center(child: CircularProgressIndicator())
-          : Column(
-        children: [
-          // ================= FORM =================
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: [
-                TextField(
-                  controller: symptoms,
-                  decoration: InputDecoration(labelText: "Symptoms"),
-                ),
-                TextField(
-                  controller: diagnosis,
-                  decoration: InputDecoration(labelText: "Diagnosis"),
-                ),
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-                TextField(
-                  controller: treatment,
-                  decoration: InputDecoration(labelText: "Treatment"),
+              // ================= FORM CARD =================
+              Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
 
-                TextField(
-                  controller: prescription,
-                  decoration: InputDecoration(labelText: "Prescription"),
-                ),
+                      const Text(
+                        "New Consultation",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
 
-                // ================= DATE PICKER UI =================
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(
-                    selectedDate == null
-                        ? "Select Date"
-                        : selectedDate!.toLocal().toString().split(' ')[0],
+                      const SizedBox(height: 15),
+
+                      TextField(
+                        controller: symptoms,
+                        decoration: _inputStyle("Symptoms", Icons.sick),
+                      ),
+                      const SizedBox(height: 10),
+
+                      TextField(
+                        controller: diagnosis,
+                        decoration: _inputStyle("Diagnosis", Icons.healing),
+                      ),
+                      const SizedBox(height: 10),
+
+                      TextField(
+                        controller: treatment,
+                        decoration: _inputStyle("Treatment", Icons.medical_services),
+                      ),
+                      const SizedBox(height: 10),
+
+                      TextField(
+                        controller: prescription,
+                        decoration: _inputStyle("Prescription", Icons.receipt),
+                      ),
+                      const SizedBox(height: 10),
+
+                      // DATE PICKER
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.grey[100],
+                        ),
+                        child: ListTile(
+                          leading: const Icon(Icons.calendar_month),
+                          title: Text(
+                            selectedDate == null
+                                ? "Select Consultation Date"
+                                : selectedDate!.toLocal().toString().split(' ')[0],
+                          ),
+                          trailing: const Icon(Icons.arrow_drop_down),
+                          onTap: pickDate,
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // MEDICINE DROPDOWN
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.grey[100],
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: DropdownButton<int>(
+                          value: selectedMedicine,
+                          hint: const Text("Select Medicine"),
+                          isExpanded: true,
+                          underline: const SizedBox(),
+                          items: medicines.map((m) {
+                            return DropdownMenuItem(
+                              value: m.id,
+                              child: Text(m.medicineName),
+                            );
+                          }).toList(),
+                          onChanged: (v) =>
+                              setState(() => selectedMedicine = v),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      TextField(
+                        controller: quantity,
+                        keyboardType: TextInputType.number,
+                        decoration:
+                        _inputStyle("Quantity", Icons.numbers),
+                      ),
+
+                      const SizedBox(height: 15),
+
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: create,
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text("Save Consultation"),
+                        ),
+                      ),
+                    ],
                   ),
-                  trailing: Icon(Icons.calendar_today),
-                  onTap: pickDate,
                 ),
+              ),
 
-                DropdownButton<int>(
-                  value: selectedMedicine,
-                  hint: Text("Select Medicine"),
-                  isExpanded: true,
-                  items: medicines.map((m) {
-                    return DropdownMenuItem(
-                      value: m.id,
-                      child: Text(m.medicineName),
-                    );
-                  }).toList(),
-                  onChanged: (v) => setState(() => selectedMedicine = v),
+              const SizedBox(height: 20),
+
+              const Text(
+                "History",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
 
-                TextField(
-                  controller: quantity,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: "Quantity"),
-                ),
+              const SizedBox(height: 10),
 
-                SizedBox(height: 10),
+              // ================= LIST =================
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: consultations.length,
+                itemBuilder: (_, i) {
+                  final c = consultations[i];
 
-                ElevatedButton(
-                  onPressed: create,
-                  child: Text("Save Consultation"),
-                ),
-              ],
-            ),
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      leading: const CircleAvatar(
+                        child: Icon(Icons.medical_information),
+                      ),
+                      title: Text(
+                        c.diagnosis,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        "Symptoms: ${c.symptoms}\nDate: ${c.consultationDate}",
+                      ),
+                      isThreeLine: true,
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
-
-          Divider(),
-
-          // ================= LIST =================
-          Expanded(
-            child: ListView.builder(
-              itemCount: consultations.length,
-              itemBuilder: (_, i) {
-                final c = consultations[i];
-
-                return Card(
-                  child: ListTile(
-                    title: Text(c.diagnosis),
-                    subtitle: Text(c.symptoms),
-                    trailing: Text(c.consultationDate),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
