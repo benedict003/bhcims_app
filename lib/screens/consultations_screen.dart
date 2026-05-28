@@ -118,7 +118,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.grey.shade50,
 
       appBar: AppBar(
         title: const Text("Consultations"),
