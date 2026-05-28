@@ -93,21 +93,38 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
     });
   }
 
+  // 🎨 INPUT STYLE (BLUE THEME)
   InputDecoration _inputStyle(String label, IconData icon) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      prefixIcon: Icon(icon, color: Colors.blue),
+
+      labelStyle: const TextStyle(color: Colors.blue),
+
       filled: true,
-      fillColor: Colors.grey[100],
+      fillColor: Colors.blue.shade50,
+
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.blue, width: 2),
+      ),
+
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.blue.shade200),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
+
       appBar: AppBar(
         title: const Text("Consultations"),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
         centerTitle: true,
       ),
 
@@ -120,9 +137,10 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              // ================= FORM CARD =================
+              // 💙 FORM CARD
               Card(
-                elevation: 3,
+                elevation: 4,
+                color: Colors.blue.shade50,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -136,6 +154,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: Colors.blue,
                         ),
                       ),
 
@@ -155,43 +174,52 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
 
                       TextField(
                         controller: treatment,
-                        decoration: _inputStyle("Treatment", Icons.medical_services),
+                        decoration:
+                        _inputStyle("Treatment", Icons.medical_services),
                       ),
                       const SizedBox(height: 10),
 
                       TextField(
                         controller: prescription,
-                        decoration: _inputStyle("Prescription", Icons.receipt),
+                        decoration:
+                        _inputStyle("Prescription", Icons.receipt),
                       ),
                       const SizedBox(height: 10),
 
-                      // DATE PICKER
+                      // 📅 DATE PICKER
                       Container(
                         decoration: BoxDecoration(
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey[100],
+                          border: Border.all(color: Colors.blue.shade200),
                         ),
                         child: ListTile(
-                          leading: const Icon(Icons.calendar_month),
+                          leading:
+                          const Icon(Icons.calendar_month, color: Colors.blue),
                           title: Text(
                             selectedDate == null
                                 ? "Select Consultation Date"
-                                : selectedDate!.toLocal().toString().split(' ')[0],
+                                : selectedDate!
+                                .toLocal()
+                                .toString()
+                                .split(' ')[0],
+                            style: const TextStyle(color: Colors.blue),
                           ),
-                          trailing: const Icon(Icons.arrow_drop_down),
+                          trailing:
+                          const Icon(Icons.arrow_drop_down, color: Colors.blue),
                           onTap: pickDate,
                         ),
                       ),
 
                       const SizedBox(height: 10),
 
-                      // MEDICINE DROPDOWN
+                      // 💊 MEDICINE DROPDOWN
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         decoration: BoxDecoration(
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey[100],
-                          border: Border.all(color: Colors.grey.shade300),
+                          border: Border.all(color: Colors.blue.shade200),
                         ),
                         child: DropdownButton<int>(
                           value: selectedMedicine,
@@ -226,6 +254,8 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                         child: ElevatedButton(
                           onPressed: create,
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -237,20 +267,22 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                   ),
                 ),
               ),
-//
+
               const SizedBox(height: 20),
 
-              const Text(
+              // 💛 HISTORY TITLE
+              Text(
                 "History",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: Colors.amber.shade800,
                 ),
               ),
 
               const SizedBox(height: 10),
 
-              // ================= LIST =================
+              // 📋 LIST
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -260,16 +292,24 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
 
                   return Card(
                     margin: const EdgeInsets.only(bottom: 10),
+                    color: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ListTile(
-                      leading: const CircleAvatar(
-                        child: Icon(Icons.medical_information),
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.blue.shade100,
+                        child: const Icon(
+                          Icons.medical_information,
+                          color: Colors.blue,
+                        ),
                       ),
                       title: Text(
                         c.diagnosis,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
                       ),
                       subtitle: Text(
                         "Symptoms: ${c.symptoms}\nDate: ${c.consultationDate}",
