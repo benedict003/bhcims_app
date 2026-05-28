@@ -139,7 +139,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
               // 💙 FORM CARD
               Card(
                 elevation: 4,
-                color: Colors.blue.shade50,
+                color: Colors.blue.shade100,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
