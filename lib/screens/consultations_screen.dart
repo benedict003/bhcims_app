@@ -237,7 +237,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                   ),
                 ),
               ),
-
+//
               const SizedBox(height: 20),
 
               const Text(
