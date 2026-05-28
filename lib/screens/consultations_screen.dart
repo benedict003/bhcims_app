@@ -220,10 +220,50 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                           hint: const Text("Select Medicine"),
                           isExpanded: true,
                           underline: const SizedBox(),
+                          //ITEMS-SECTION
                           items: medicines.map((m) {
                             return DropdownMenuItem(
                               value: m.id,
-                              child: Text(m.medicineName),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+
+                                  // 💊 Medicine name
+                                  Expanded(
+                                    child: Text(
+                                      m.medicineName,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.blue,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+
+                                  const SizedBox(width: 10),
+
+                                  // 📦 Stock indicator
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: (m.stockQuantity <= 10)
+                                          ? Colors.red.shade100
+                                          : Colors.green.shade100,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      "Stock: ${m.stockQuantity}",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: (m.stockQuantity <= 10)
+                                            ? Colors.red
+                                            : Colors.green,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             );
                           }).toList(),
                           onChanged: (v) => setState(() => selectedMedicine = v),
