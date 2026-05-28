@@ -188,24 +188,19 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
                       // 📅 DATE PICKER
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.white, // ✅ WHITE INSIDE
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.blue.shade200),
                         ),
                         child: ListTile(
-                          leading:
-                          const Icon(Icons.calendar_month, color: Colors.blue),
+                          leading: const Icon(Icons.calendar_month, color: Colors.blue),
                           title: Text(
                             selectedDate == null
                                 ? "Select Consultation Date"
-                                : selectedDate!
-                                .toLocal()
-                                .toString()
-                                .split(' ')[0],
+                                : selectedDate!.toLocal().toString().split(' ')[0],
                             style: const TextStyle(color: Colors.blue),
                           ),
-                          trailing:
-                          const Icon(Icons.arrow_drop_down, color: Colors.blue),
+                          trailing: const Icon(Icons.arrow_drop_down, color: Colors.blue),
                           onTap: pickDate,
                         ),
                       ),
