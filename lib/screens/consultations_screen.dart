@@ -98,11 +98,10 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
     return InputDecoration(
       labelText: label,
       prefixIcon: Icon(icon, color: Colors.blue),
-
       labelStyle: const TextStyle(color: Colors.blue),
 
       filled: true,
-      fillColor: Colors.blue.shade50,
+      fillColor: Colors.white, // ✅ WHITE INSIDE BOX
 
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
