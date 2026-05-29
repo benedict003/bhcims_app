@@ -110,7 +110,7 @@ class _ConsultationsScreenState extends State<ConsultationsScreen> {
 
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.blue.shade200),
+        borderSide: BorderSide(color: Colors.blue.shade100),
       ),
     );
   }
