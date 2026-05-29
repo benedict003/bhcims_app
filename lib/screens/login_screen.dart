@@ -206,9 +206,16 @@ class _LoginScreenState extends State<LoginScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.blue.shade400,
+
+                  side: BorderSide(
+                    color: Colors.blue.shade200,
+                  ),
+
                   padding: EdgeInsets.symmetric(vertical: 14),
+
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
                 onPressed: () {
