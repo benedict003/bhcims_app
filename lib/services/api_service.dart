@@ -26,6 +26,17 @@ class ApiService {
     await prefs.remove('token');
   }
 
+  static Future<void> saveUser(Map user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user', jsonEncode(user));
+  }
+
+  static Future<Map<String, dynamic>?> getUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final user = prefs.getString('user');
+    return user != null ? jsonDecode(user) : null;
+  }
+
   // =========================
   // HEADERS
   // =========================
@@ -83,6 +94,7 @@ class ApiService {
 
     if (response.statusCode == 200 && data['token'] != null) {
       await saveToken(data['token']);
+      await saveUser(data['user']);
     }
 
     return data;
