@@ -110,7 +110,18 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
-        title: Text('BHCIMS Login'),
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: Colors.blue.shade400,
+        title: Text(
+          "Health Center Portal",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            letterSpacing: 0.5,
+          ),
+        ),
       ),
 
       body: Padding(
