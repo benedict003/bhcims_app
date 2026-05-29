@@ -59,7 +59,14 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         ),
       ),
       body: loading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
+          : appointments.isEmpty
+          ? const Center(
+        child: Text(
+          "No appointments found",
+          style: TextStyle(color: Colors.grey),
+        ),
+      )
           : ListView.builder(
           itemCount: appointments.length,
           itemBuilder: (_, i) {
