@@ -79,22 +79,26 @@ class _MedicinesScreenState extends State<MedicinesScreen>
           "You are not allowed to view medicines",
           style: TextStyle(
             fontSize: 16,
-            color: Colors.red,
-            fontWeight: FontWeight.bold,
+            color: Colors.redAccent,
+            fontWeight: FontWeight.w600,
           ),
         ),
       )
 
           : (data.isEmpty)
-          ? const Center(child: Text("No medicines found"))
+          ? const Center(
+        child: Text(
+          "No medicines found",
+          style: TextStyle(fontSize: 16),
+        ),
+      )
 
           : Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         child: ListView.builder(
+          physics: const BouncingScrollPhysics(),
           itemCount: data.length,
-          itemBuilder: (_, i) {
-            return animatedCard(data[i], i);
-          },
+          itemBuilder: (_, i) => animatedCard(data[i], i),
         ),
       ),
     );
