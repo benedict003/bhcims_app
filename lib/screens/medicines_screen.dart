@@ -12,6 +12,7 @@ class _MedicinesScreenState extends State<MedicinesScreen>
 
   List<MedicineModel> data = [];
   bool loading = true;
+  String? role;
 
   late AnimationController _controller;
 
@@ -24,7 +25,21 @@ class _MedicinesScreenState extends State<MedicinesScreen>
       duration: const Duration(milliseconds: 800),
     );
 
-    load();
+    loadUserAndData();
+  }
+
+  Future<void> loadUserAndData() async {
+    final user = await ApiService.getUser();
+    role = user?['role'];
+
+    if (role != 'admin' && role != 'doctor') {
+      setState(() {
+        loading = false;
+      });
+      return;
+    }
+
+    await load();
   }
 
   Future<void> load() async {
@@ -35,7 +50,6 @@ class _MedicinesScreenState extends State<MedicinesScreen>
       loading = false;
     });
 
-    // start animation after data loads
     _controller.forward();
   }
 
@@ -45,10 +59,45 @@ class _MedicinesScreenState extends State<MedicinesScreen>
     super.dispose();
   }
 
-  Color getStockColor(int stock) {
-    if (stock <= 10) return Colors.red;
-    if (stock <= 30) return Colors.orange;
-    return Colors.green;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey.shade100,
+      appBar: AppBar(
+        title: const Text("Medicines Inventory"),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+      ),
+
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+
+          : (role != 'admin' && role != 'doctor')
+          ? const Center(
+        child: Text(
+          "You are not allowed to view medicines",
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      )
+
+          : (data.isEmpty)
+          ? const Center(child: Text("No medicines found"))
+
+          : Padding(
+        padding: const EdgeInsets.all(12),
+        child: ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (_, i) {
+            return animatedCard(data[i], i);
+          },
+        ),
+      ),
+    );
   }
 
   Widget animatedCard(MedicineModel m, int index) {
@@ -71,102 +120,11 @@ class _MedicinesScreenState extends State<MedicinesScreen>
 
         child: Card(
           margin: const EdgeInsets.only(bottom: 12),
-          elevation: 3,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+          child: ListTile(
+            title: Text(m.medicineName),
+            subtitle: Text("Unit: ${m.unit}"),
+            trailing: Text("${m.stockQuantity}"),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Row(
-              children: [
-
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Colors.blue.shade100,
-                  child: const Icon(
-                    Icons.medication,
-                    color: Colors.blue,
-                  ),
-                ),
-
-                const SizedBox(width: 12),
-
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      Text(
-                        m.medicineName,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                      ),
-
-                      const SizedBox(height: 4),
-
-                      Text(
-                        "Unit: ${m.unit}",
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: getStockColor(m.stockQuantity).withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: getStockColor(m.stockQuantity),
-                    ),
-                  ),
-                  child: Text(
-                    "Stock: ${m.stockQuantity}",
-                    style: TextStyle(
-                      color: getStockColor(m.stockQuantity),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-
-      appBar: AppBar(
-        title: const Text("Medicines Inventory"),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        centerTitle: true,
-      ),
-
-      body: loading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.all(12),
-        child: ListView.builder(
-          itemCount: data.length,
-          itemBuilder: (_, i) {
-            return animatedCard(data[i], i);
-          },
         ),
       ),
     );
