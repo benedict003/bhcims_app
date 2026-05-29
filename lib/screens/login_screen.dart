@@ -68,6 +68,42 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+//INPUT STYLE
+  InputDecoration inputStyle(
+      String label,
+      IconData icon,
+      ) {
+    return InputDecoration(
+      labelText: label,
+
+      prefixIcon: Icon(
+        icon,
+        color: Colors.blue.shade400,
+      ),
+
+      filled: true,
+      fillColor: Colors.white,
+
+      labelStyle: TextStyle(
+        color: Colors.blue.shade400,
+      ),
+
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(
+          color: Colors.blue.shade100,
+        ),
+      ),
+
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(
+          color: Colors.blue.shade300,
+          width: 2,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
