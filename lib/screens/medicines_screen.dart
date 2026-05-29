@@ -114,20 +114,90 @@ class _MedicinesScreenState extends State<MedicinesScreen>
       ),
     );
 
+    Color stockColor;
+    if (m.stockQuantity <= 5) {
+      stockColor = Colors.red;
+    } else if (m.stockQuantity <= 20) {
+      stockColor = Colors.orange;
+    } else {
+      stockColor = Colors.green;
+    }
+
     return FadeTransition(
       opacity: animation,
       child: SlideTransition(
         position: Tween<Offset>(
-          begin: const Offset(0, 0.2),
+          begin: const Offset(0, 0.15),
           end: Offset.zero,
         ).animate(animation),
 
-        child: Card(
+        child: Container(
           margin: const EdgeInsets.only(bottom: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              colors: [Colors.white, Colors.grey.shade50],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              )
+            ],
+          ),
+
           child: ListTile(
-            title: Text(m.medicineName),
-            subtitle: Text("Unit: ${m.unit}"),
-            trailing: Text("${m.stockQuantity}"),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 10,
+            ),
+
+            leading: Container(
+              height: 45,
+              width: 45,
+              decoration: BoxDecoration(
+                color: stockColor.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.medication_outlined,
+                color: stockColor,
+              ),
+            ),
+
+            title: Text(
+              m.medicineName,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
+
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                "Unit: ${m.unit}",
+                style: TextStyle(color: Colors.grey.shade600),
+              ),
+            ),
+
+            trailing: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: stockColor.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                "${m.stockQuantity}",
+                style: TextStyle(
+                  color: stockColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         ),
       ),
