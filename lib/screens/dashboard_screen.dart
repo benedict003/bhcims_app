@@ -78,8 +78,6 @@ class DashboardScreen extends StatelessWidget {
       _card(context, 'Residents', Icons.people, ResidentsScreen()),
       _card(context, 'Appointments', Icons.calendar_today,
           AppointmentsScreen(user: user)),
-      _card(context, 'Consultations', Icons.medical_services,
-          ConsultationsScreen(user: user)),
       _card(context, 'Medicines', Icons.medication, MedicinesScreen()),
       _card(context, 'Reports', Icons.bar_chart,
               ReportsScreen(user: user)),
