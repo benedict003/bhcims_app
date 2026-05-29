@@ -97,16 +97,23 @@ class _ResidentsScreenState extends State<ResidentsScreen> {
     return Scaffold(
       appBar: AppBar(title: Text("Residents")),
       body: loading
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (_, i) {
-          final r = data[i];
-          return ListTile(
-            title: Text("${r.firstName} ${r.lastName}"),
-            subtitle: Text(r.address),
-          );
-        },
+          ? const Center(child: CircularProgressIndicator())
+
+          : data.isEmpty
+          ? const Center(
+        child: Text(
+          "No residents found",
+          style: TextStyle(fontSize: 16),
+        ),
+      )
+
+          : Padding(
+        padding: const EdgeInsets.all(12),
+        child: ListView.builder(
+          physics: const BouncingScrollPhysics(),
+          itemCount: data.length,
+          itemBuilder: (_, i) => residentCard(data[i]),
+        ),
       ),
     );
   }
