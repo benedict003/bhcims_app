@@ -119,7 +119,41 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
 
-            SizedBox(height: 50),
+            SizedBox(height: 40),
+
+            CircleAvatar(
+              radius: 45,
+              backgroundColor: Colors.blue.shade100,
+              child: Icon(
+                Icons.local_hospital,
+                size: 45,
+                color: Colors.blue.shade400,
+              ),
+            ),
+
+            SizedBox(height: 20),
+
+            Text(
+              "BHCIMS",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue.shade400,
+              ),
+            ),
+
+            SizedBox(height: 8),
+
+            Text(
+              "Barangay Health Center Information Management System",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey.shade600,
+                fontSize: 14,
+              ),
+            ),
+
+            SizedBox(height: 35),
 
             // ================= EMAIL =================
             TextField(
