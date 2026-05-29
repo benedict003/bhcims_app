@@ -45,6 +45,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade50,
       appBar: AppBar(title: Text("Appointments")),
       body: loading
           ? Center(child: CircularProgressIndicator())
