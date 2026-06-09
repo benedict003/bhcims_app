@@ -6,7 +6,7 @@ import 'appointments_screen.dart';
 import 'consultations_screen.dart';
 import 'medicines_screen.dart';
 import 'reports_screen.dart';
-
+//
 class DashboardScreen extends StatelessWidget {
   final Map user;
 
